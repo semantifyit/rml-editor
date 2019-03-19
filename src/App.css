@@ -2,14 +2,8 @@
   text-align: center;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
-  pointer-events: none;
-}
-
 .App-header {
-  background-color: #282c34;
+  background-color:#201b42;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -19,15 +13,45 @@
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.grid {
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-template-rows: auto auto;
+  grid-gap: 50px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.width-auto {
+  width: auto;
+}
+
+.button {
+  display: inline-block;
+  padding: 15px 25px;
+  font-size: 24px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #fff;
+  background-color: #4CAF50;
+  border: none;
+  border-radius: 5px;
+}
+
+.button:hover {background-color: #3e8e41}
+
+
+.footer {
+  padding-bottom: 100px;
+}
+
+.marginRight {
+  padding-right: 30px;
+}
+
+.ace-dracula .ace_meta.ace_tag {
+  color: #F92672;
+}
+.ace-dracula .ace_keyword {
+  color: #F92672 !important;
 }
