@@ -17,6 +17,7 @@ import { parseFile, yarrrmlParse, yarrrmlExtend } from './rmlmapper';
 
 const initialMapping = `prefixes:
   schema: "http://schema.org/"
+  myfunc: "http://myfunc.com/"
 mappings:
   person:
     sources:
@@ -25,7 +26,9 @@ mappings:
     po:
       - [a, schema:Person]
       - [schema:name, $(firstname)]
-      - [schema:language, $(speaks.*)]`;
+      - [schema:language, $(speaks.*)]
+      - [schema:geo, {function: myfunc:toUpperCase, parameters: [$(title), $(foo)]}]`;
+
 const initialInput = `{
   "persons": [
       {
@@ -82,13 +85,13 @@ const App = () => {
       if (rmlType === 'yaml') {
         mapping_ttl = yarrrmlExtend(mapping_ttl);
         mapping_ttl = await yarrrmlParse(mapping_ttl);
-        console.log(mapping_ttl);
-        
+        //console.log(mapping_ttl);
       }
       const result = await parseFile(mapping_ttl,
         input,
         {
           toRDF: (outputType==='turtle').toString(),
+          removeNameSpace:{xmlns:"http://interface.deskline.net/DSI/XSD"},
           //replace:'true',
           //compress: { 
           //  '@vocab':"http://schema.org/"
