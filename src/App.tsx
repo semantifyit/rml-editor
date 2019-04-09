@@ -92,10 +92,10 @@ const App = () => {
         {
           toRDF: (outputType==='turtle').toString(),
           removeNameSpace:{xmlns:"http://interface.deskline.net/DSI/XSD"},
-          //replace:'true',
-          //compress: { 
-          //  '@vocab':"http://schema.org/"
-          //},
+          replace: true,
+          compress: { 
+           '@vocab':"http://schema.org/"
+          },
           functions: eval(functions),
         },
         inputType);
