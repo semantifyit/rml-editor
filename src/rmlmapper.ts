@@ -38,12 +38,12 @@ export const parseFile = async (mappingFile: string, inputFile: string, options:
 
 export const yarrrmlExtend = (yarrrml: string): string => {
     // replace join
-    let str = yarrrml.replace(/join: *\[ *([\w@\^\.\/]+) *, *([\w@\^\.\/]+) *\]/g, 'condition:{function:equal,parameters:[[str1,$($1)],[str2,$($2)]]}');
-    str = str.replace(/((?:parameters|pms): *\[)([\w@\^\.\/\$\(\)\"\' ,\[\]]+)(\])/g,
-        (...e) => {
-            const [, cg1, cg2, cg3] = e as [string,string,string,string];
-            const params = cg2.split(',').map((e, i) => `[schema:str${i}, ${e.trim()}]`).join(', ')
-            return cg1 + params + cg3;
-        });
+    let str = yarrrml.replace(/((?:parameters|pms): *\[)([\w@\^\.\/\$\(\)\"\' ,\[\]]+)(\])/g,
+    (...e) => {
+        const [, cg1, cg2, cg3] = e as [string,string,string,string];
+        const params = cg2.split(',').map((e, i) => `[schema:str${i}, ${e.trim()}]`).join(', ')
+        return cg1 + params + cg3;
+    });
+    str = yarrrml.replace(/join: *\[ *([\w@\^\.\/]+) *, *([\w@\^\.\/]+) *\]/g, 'condition:{function:equal,parameters:[[str1,$($1)],[str2,$($2)]]}');
     return str;
 }
