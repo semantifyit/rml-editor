@@ -15,9 +15,10 @@
 
 .grid {
   display: grid;
-  grid-template-columns: auto auto;
+  grid-template-columns: 50% 50%;
   grid-template-rows: auto auto;
-  grid-gap: 50px;
+  grid-gap: 5px;
+  width: 98vw;
 }
 
 .width-auto {
@@ -38,6 +39,12 @@
   border-radius: 5px;
 }
 
+.small {
+  padding: 5px 10px;
+  font-size: 16px;
+  border-radius: 3px;
+}
+
 .button:hover {background-color: #3e8e41}
 
 
@@ -54,4 +61,8 @@
 }
 .ace-dracula .ace_keyword {
   color: #F92672 !important;
+}
+
+.ace-dracula .ace_marker-layer .ace_selection {
+  background: #9194a2 !important;
 }

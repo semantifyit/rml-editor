@@ -14,6 +14,7 @@ import 'brace/theme/dracula';
 import './App.css';
 
 import { parseFile, yarrrmlParse, yarrrmlExtend } from './rmlmapper';
+import { downloadString } from './util';
 
 const initialMapping = `prefixes:
   schema: "http://schema.org/"
@@ -21,7 +22,7 @@ const initialMapping = `prefixes:
 mappings:
   person:
     sources:
-      - ['input.json~jsonpath', '$.persons[*]']
+      - ['input~jsonpath', '$.persons[*]']
     s: http://example.com/$(firstname)
     po:
       - [a, schema:Person]
@@ -67,6 +68,10 @@ const initialFunctions =
 })();
 `;
 
+window.onbeforeunload = function() {
+  return true;
+};
+
 const App = () => {
   const [mapping, setMapping] = useState(initialMapping);
   const [input, setInput] = useState(initialInput);
@@ -75,8 +80,10 @@ const App = () => {
   const [inputType, setInputType] = useState('json');
   const [outputType, setOutputType] = useState('json');
   const [rmlType, setRmlType] = useState('yaml');
-  const [runOnChange, setRunOnChange] = useState(true);
+  const [runOnChange, setRunOnChange] = useState(false);
   const [showFunctions, setShowFunctions] = useState(false);
+
+  let mappingRMLStr = '';
 
   const runMapping = async () => {
     try {
@@ -84,9 +91,11 @@ const App = () => {
 
       if (rmlType === 'yaml') {
         mapping_ttl = yarrrmlExtend(mapping_ttl);
+        //console.log(mapping_ttl);
         mapping_ttl = await yarrrmlParse(mapping_ttl);
         //console.log(mapping_ttl);
       }
+      mappingRMLStr = mapping_ttl;
       const result = await parseFile(mapping_ttl,
         input,
         {
@@ -104,6 +113,10 @@ const App = () => {
       console.log(e);
       setOutput(e.toString());
     }
+  }
+
+  const saveRML = () => {
+    downloadString(mappingRMLStr, 'ttl', 'mapping_rml.ttl');
   }
 
   if(runOnChange){
@@ -152,7 +165,7 @@ const App = () => {
               </div>
             )}
             <div className="width-auto">
-              <h3>Input{`.${inputType}`}</h3>
+              <h3>Input({`.${inputType}`})</h3>
               <AceEditor
                 fontSize={14}
                 mode={inputType}
@@ -206,6 +219,8 @@ const App = () => {
                 <input type="checkbox" name="runMapperOnChange" checked={showFunctions} onChange={(e) => setShowFunctions(!showFunctions)}/> Show functions
               </span>
               <input type="checkbox" name="runMapperOnChange" checked={runOnChange} onChange={(e) => setRunOnChange(!runOnChange)}/> Run mapper on change
+              <br/>
+              <button className="button small" onClick={saveRML}>Download RML</button>
             </div>
           </div>
           <div className="footer"/>
