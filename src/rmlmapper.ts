@@ -48,3 +48,14 @@ export const yarrrmlExtend = (yarrrml: string): string => {
     str = str.replace(/join: *\[ *([\w@\^\.\/]+) *, *([\w@\^\.\/]+) *\]/g, 'condition:{function:equal,parameters:[[str1,$($1)],[str2,$($2)]]}');
     return str;
 }
+
+// name$LBR.$RBR -> name(.)
+const escapeTable = {
+    "(": "\\$LBR",
+    ")": "\\$RBR",
+    "{": "\\$LCB",
+    "}": "\\$RCB",
+}
+
+export const decodeRMLReplacements = (rml: string) => 
+    Object.entries(escapeTable).reduce((str, [char, code]) => str.replace(new RegExp(code, 'g'), char), rml);

@@ -13,7 +13,7 @@ import 'brace/theme/dracula';
 
 import './App.css';
 
-import { parseFile, yarrrmlParse, yarrrmlExtend } from './rmlmapper';
+import { parseFile, yarrrmlParse, yarrrmlExtend, decodeRMLReplacements } from './rmlmapper';
 import { downloadString } from './util';
 
 const initialMapping = `prefixes:
@@ -28,7 +28,7 @@ mappings:
       - [a, schema:Person]
       - [schema:name, $(firstname)]
       - [schema:language, $(speaks.*)]
-      - [schema:geo, {function: myfunc:toUpperCase, parameters: [$(title), $(foo)]}]`;
+`;
 
 const initialInput = `{
   "persons": [
@@ -83,20 +83,23 @@ const App = () => {
   const [runOnChange, setRunOnChange] = useState(false);
   const [showFunctions, setShowFunctions] = useState(false);
 
-  let mappingRMLStr = '';
+  let downloadRmlStr = '';
 
   const runMapping = async () => {
     try {
-      let mapping_ttl = mapping;
+      let mappingStr = mapping;
 
       if (rmlType === 'yaml') {
-        mapping_ttl = yarrrmlExtend(mapping_ttl);
+        const extYml = yarrrmlExtend(mappingStr);
         //console.log(mapping_ttl);
-        mapping_ttl = await yarrrmlParse(mapping_ttl);
+        mappingStr = await yarrrmlParse(extYml);
         //console.log(mapping_ttl);
+        // replace Brackets
+        mappingStr = decodeRMLReplacements(mappingStr);
+
       }
-      mappingRMLStr = mapping_ttl;
-      const result = await parseFile(mapping_ttl,
+      downloadRmlStr = mappingStr;
+      const result = await parseFile(mappingStr,
         input,
         {
           toRDF: (outputType==='turtle').toString(),
@@ -116,7 +119,7 @@ const App = () => {
   }
 
   const saveRML = () => {
-    downloadString(mappingRMLStr, 'ttl', 'mapping_rml.ttl');
+    downloadString(downloadRmlStr, 'ttl', 'mapping_rml.ttl');
   }
 
   if(runOnChange){
