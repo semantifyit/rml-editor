@@ -45,7 +45,7 @@ export const yarrrmlExtend = (yarrrml: string): string => {
         return cg1 + params + cg3;
     });
     // replace join    
-    str = str.replace(/join: *\[ *([\w@\^\.\/]+) *, *([\w@\^\.\/]+) *\]/g, 'condition:{function:equal,parameters:[[str1,$($1)],[str2,$($2)]]}');
+    str = str.replace(/join: *\[ *"?([\w@\^\.\/\$\:\-\*\,\ ]+)"? *, *"?([\w@\^\.\/\$\:\-\*\,\ ]+)"? *\]/g, 'condition:{function:equal,parameters:[[str1,"$($1)"],[str2,"$($2)"]]}');
     return str;
 }
 
