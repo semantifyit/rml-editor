@@ -7,13 +7,20 @@ export const yarrrmlParse = (yaml: string): Promise<string> =>
     new Promise((resolve) => {
         const y2r = new yarrrml();
         const yamlQuads = y2r.convert(yaml);
-        const writer = N3.Writer({
+        let prefixes = {
             rr: 'http://www.w3.org/ns/r2rml#',
+            rml: 'http://semweb.mmlab.be/ns/rml#',
+            xsd: 'http://www.w3.org/2001/XMLSchema#',
+            schema: 'http://schema.org/',
             rdf:'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
             rdfs: 'http://www.w3.org/2000/01/rdf-schema#',
             fnml: "http://semweb.mmlab.be/ns/fnml#",
-            fno: "http://w3id.org/function/ontology#"
-        });
+            fno: "http://w3id.org/function/ontology#",
+            mex: "http://mapping.example.com/"
+        };
+        prefixes = Object.assign({}, prefixes, y2r.getPrefixes());
+
+        const writer = N3.Writer({prefixes});
         writer.addQuads(yamlQuads);
         writer.end((_: any, result: any) => {
             resolve(result);
