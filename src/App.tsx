@@ -102,7 +102,7 @@ const App = () => {
       const result = await parseFile(mappingStr,
         input,
         {
-          toRDF: (outputType==='turtle').toString(),
+          toRDF: (outputType==='turtle'),
           removeNameSpace:{xmlns:"http://interface.deskline.net/DSI/XSD"},
           replace: true,
           compress: { 
@@ -110,7 +110,7 @@ const App = () => {
           },
           functions: eval(functions),
         },
-        inputType);
+        inputType);        
       setOutput(outputType==='turtle' ? result : JSON.stringify(result, null, 2));
     } catch (e) {
       console.log(e);

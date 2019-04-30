@@ -13,7 +13,7 @@
     "react-ace": "^6.4.0",
     "react-dom": "^16.8.4",
     "react-scripts": "2.1.8",
-    "rml-mapper-nodejs": "git://github.com/semantifyit/RML-mapper#43a38cf51c18ca4073b2eeacf272fa124445225e",
+    "rml-mapper-nodejs": "git://github.com/semantifyit/RML-mapper#b91e1478803896050ea4d996206d16aaec4c171c",
     "typescript": "3.3.3333"
   },
   "scripts": {

@@ -20,7 +20,7 @@ export const yarrrmlParse = (yaml: string): Promise<string> =>
         };
         prefixes = Object.assign({}, prefixes, y2r.getPrefixes());
 
-        const writer = N3.Writer({prefixes});
+        const writer = new N3.Writer({prefixes});
         writer.addQuads(yamlQuads);
         writer.end((_: any, result: any) => {
             resolve(result);
