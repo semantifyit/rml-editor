@@ -29,7 +29,7 @@ export const yarrrmlParse = (yaml: string): Promise<string> =>
 
 
 export const parseFile = async (mappingFile: string, inputFile: string, options:any, inputType:string) => {
-    return rmlMapperNode.parseFileLive(mappingFile, {['input']: inputFile}, options);
+    return rmlMapperNode.parseFileLive(mappingFile, {'input': inputFile}, options);
 }
 
 
