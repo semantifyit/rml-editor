@@ -9,11 +9,12 @@
     "@types/react": "16.8.7",
     "@types/react-dom": "16.8.2",
     "brace": "^0.11.1",
+    "n3": "^1.1.1",
     "react": "^16.8.4",
     "react-ace": "^6.4.0",
     "react-dom": "^16.8.4",
     "react-scripts": "2.1.8",
-    "rml-mapper-nodejs": "git://github.com/semantifyit/RML-mapper#b91e1478803896050ea4d996206d16aaec4c171c",
+    "rml-mapper-nodejs": "git://github.com/semantifyit/RML-mapper#621bb773e5c9440037a0009f3a42c21c552e350d",
     "typescript": "3.3.3333"
   },
   "scripts": {
