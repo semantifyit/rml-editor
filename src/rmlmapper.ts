@@ -82,9 +82,7 @@ export const decodeRMLReplacements = (rml: string) =>
   );
 
 export const yarrrmlPlusToRml = async (yarrrml: string): Promise<string> => {
-  let mappingStr = yarrrmlExtend(yarrrml);
-  console.log(mappingStr);
-  
+  let mappingStr = yarrrmlExtend(yarrrml);  
   mappingStr = await yarrrmlParse(mappingStr);
   mappingStr = decodeRMLReplacements(mappingStr);
   return mappingStr;
