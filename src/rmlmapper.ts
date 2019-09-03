@@ -61,7 +61,7 @@ export const yarrrmlExtend = (yarrrml: string): string => {
   );
   // replace join
   str = str.replace(
-    /join: *\[ *"?([\w@\^\.\/\$\:\-\*\,\ ]+)"? *, *"?([\w@\^\.\/\$\:\-\*\,\ ]+)"? *\]/g,
+    /join: *\[ *"?([\w@\^\.\/\$\:\-\*\,\ \']+)"? *, *"?([\w@\^\.\/\$\:\-\*\,\ \']+)"? *\]/g,
     'condition:{function:equal,parameters:[[str1,"$($1)"],[str2,"$($2)"]]}',
   );
   return str;
