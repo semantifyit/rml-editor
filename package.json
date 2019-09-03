@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@rmlio/yarrrml-parser": "^0.3.2",
+    "@rmlio/yarrrml-parser": "^0.3.7",
     "@types/jest": "24.0.11",
     "@types/node": "11.11.1",
     "@types/react": "16.8.7",
@@ -14,7 +14,7 @@
     "react-ace": "^6.4.0",
     "react-dom": "^16.8.4",
     "react-scripts": "2.1.8",
-    "rml-mapper-nodejs": "git://github.com/semantifyit/RML-mapper#621bb773e5c9440037a0009f3a42c21c552e350d",
+    "rml-mapper-nodejs": "git://github.com/semantifyit/RocketRML#630a2a0eda2dde41d54427232c3a9039ba27418f",
     "typescript": "3.3.3333"
   },
   "scripts": {

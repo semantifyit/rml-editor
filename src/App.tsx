@@ -13,7 +13,7 @@ import 'brace/theme/dracula';
 
 import './App.css';
 
-import { parseFile, yarrrmlParse, yarrrmlExtend, decodeRMLReplacements } from './rmlmapper';
+import { runRmlMapping, yarrrmlPlusToRml } from './rmlmapper';
 import { downloadString } from './util';
 
 const initialMapping = `prefixes:
@@ -90,16 +90,10 @@ const App = () => {
       let mappingStr = mapping;
 
       if (rmlType === 'yaml') {
-        const extYml = yarrrmlExtend(mappingStr);
-        //console.log(mapping_ttl);
-        mappingStr = await yarrrmlParse(extYml);
-        //console.log(mapping_ttl);
-        // replace Brackets
-        mappingStr = decodeRMLReplacements(mappingStr);
-
+        mappingStr = await yarrrmlPlusToRml(mappingStr);
       }
       downloadRmlStr = mappingStr;
-      const result = await parseFile(mappingStr,
+      const result = await runRmlMapping(mappingStr,
         input,
         {
           toRDF: (outputType==='turtle'),
@@ -109,8 +103,7 @@ const App = () => {
            '@vocab':"http://schema.org/"
           },
           functions: eval(functions),
-        },
-        inputType);        
+        });        
       setOutput(outputType==='turtle' ? result : JSON.stringify(result, null, 2));
     } catch (e) {
       console.log(e);
