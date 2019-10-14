@@ -1,6 +1,6 @@
-import N3 from 'n3';
-import yarrrmlParser from '@rmlio/yarrrml-parser/lib/rml-generator';
-import rmlMapperNode from 'rml-mapper-nodejs';
+import * as N3 from 'n3';
+import * as yarrrmlParser from '@rmlio/yarrrml-parser/lib/rml-generator';
+import * as rmlMapperNode from 'rocketrml';
 
 export const yarrrmlParse = (yaml: string): Promise<string> =>
   new Promise((resolve) => {
@@ -30,7 +30,7 @@ export const runRmlMapping = async (
   mappingFile: string,
   inputFile: string,
   options: any,
-  ) => {
+) => {
   return rmlMapperNode.parseFileLive(
     mappingFile,
     { input: inputFile },
@@ -79,52 +79,52 @@ const yarrrmlEncodeBrackets = (str: string) => {
   let level = 0;
   let ret = '';
 
-  for(let i = 0; i< str.length; i++) {
+  for (let i = 0; i < str.length; i += 1) {
     const c = str[i];
 
-    if(level < 0) {
+    if (level < 0) {
       throw new Error('failed parsing brackets');
     }
 
     if (level === 0) {
       switch (c) {
-        case '$': 
-          if (str[i+1] === '(') {
-            level ++;
-            i ++;
-            ret += '$('
+        case '$':
+          if (str[i + 1] === '(') {
+            level += 1;
+            i += 1;
+            ret += '$(';
+          } else {
+            ret += c;
           }
           break;
-        case '(': 
+        case '(':
         case ')':
-        default: 
+        default:
           ret += c;
       }
     } else {
       switch (c) {
-        case '(': 
-          level++;
+        case '(':
+          level += 1;
           ret += '$LBR';
           break;
         case ')':
-          level--;
+          level -= 1;
           if (level === 0) {
             ret += ')';
           } else {
             ret += '$RBR';
           }
           break;
-        default: 
+        default:
           ret += c;
       }
     }
-
   }
   return ret;
-}
+};
 
 // console.log(yarrrmlEncodeBrackets('asd$(fii) fds $(fs(name(), conc(foo, my, "fellow"))g) why'));
-
 
 export const decodeRMLReplacements = (rml: string) =>
   Object.entries(escapeTable).reduce(
@@ -133,7 +133,7 @@ export const decodeRMLReplacements = (rml: string) =>
   );
 
 export const yarrrmlPlusToRml = async (yarrrml: string): Promise<string> => {
-  let mappingStr = yarrrmlExtend(yarrrml);    
+  let mappingStr = yarrrmlExtend(yarrrml);
   mappingStr = yarrrmlEncodeBrackets(mappingStr);
   mappingStr = await yarrrmlParse(mappingStr);
   mappingStr = decodeRMLReplacements(mappingStr);

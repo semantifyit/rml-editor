@@ -14,7 +14,7 @@
     "react-ace": "^6.4.0",
     "react-dom": "^16.8.4",
     "react-scripts": "2.1.8",
-    "rml-mapper-nodejs": "git://github.com/semantifyit/RocketRML#630a2a0eda2dde41d54427232c3a9039ba27418f",
+    "rocketrml": "git+https://github.com/semantifyit/RocketRML/#955a2b4295a676af7703ff4120bc863a45af70dd",
     "typescript": "3.3.3333"
   },
   "scripts": {
