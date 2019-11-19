@@ -14,7 +14,7 @@
     "react-ace": "^6.4.0",
     "react-dom": "^16.8.4",
     "react-scripts": "2.1.8",
-    "rocketrml": "git+https://github.com/semantifyit/RocketRML/#955a2b4295a676af7703ff4120bc863a45af70dd",
+    "rocketrml": "^1.0.9",
     "typescript": "3.3.3333"
   },
   "scripts": {
