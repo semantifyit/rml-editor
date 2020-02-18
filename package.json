@@ -13,8 +13,8 @@
     "react": "^16.8.4",
     "react-ace": "^6.4.0",
     "react-dom": "^16.8.4",
-    "react-scripts": "2.1.8",
-    "rocketrml": "^1.0.9",
+    "react-scripts": "^3.3.0",
+    "rocketrml": "^1.2.0",
     "typescript": "3.3.3333"
   },
   "scripts": {

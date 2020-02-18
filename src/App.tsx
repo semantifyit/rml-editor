@@ -9,6 +9,7 @@ import 'brace/mode/xml';
 import 'brace/mode/json';
 import 'brace/mode/javascript';
 
+
 import 'brace/theme/dracula';
 
 import './App.css';
@@ -68,9 +69,11 @@ const initialFunctions =
 })();
 `;
 
-window.onbeforeunload = function() {
-  return true;
-};
+// window.onbeforeunload = function() {
+//   return true;
+// };
+
+
 
 const App = () => {
   const [mapping, setMapping] = useState(initialMapping);
@@ -86,11 +89,13 @@ const App = () => {
   let downloadRmlStr = '';
 
   const runMapping = async () => {
+    console.time("time")
     try {
       let mappingStr = mapping;
 
       if (rmlType === 'yaml') {
         mappingStr = await yarrrmlPlusToRml(mappingStr);
+        console.log(mappingStr);
       }
       downloadRmlStr = mappingStr;
       const result = await runRmlMapping(mappingStr,
@@ -100,7 +105,8 @@ const App = () => {
           removeNameSpace:{xmlns:"http://interface.deskline.net/DSI/XSD"},
           replace: true,
           compress: { 
-           '@vocab':"http://schema.org/"
+           '@vocab':"http://schema.org/",
+           "booking": "http://booking-monitor.tirol.kg/vocab/"
           },
           functions: eval(functions),
         });        
@@ -109,6 +115,8 @@ const App = () => {
       console.log(e);
       setOutput(e.toString());
     }
+    console.timeEnd("time")
+
   }
 
   const saveRML = () => {
@@ -202,6 +210,7 @@ const App = () => {
                 <select value={inputType} onChange={(e) => setInputType(e.target.value)}>
                   <option value="json">JSON</option>
                   <option value="xml">XML</option>
+                  <option value="text">CSV</option>
                 </select>
               </span>
               <span className="marginRight">
