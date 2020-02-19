@@ -86,8 +86,6 @@ const App = () => {
   const [runOnChange, setRunOnChange] = useState(false);
   const [showFunctions, setShowFunctions] = useState(false);
 
-  let downloadRmlStr = '';
-
   const runMapping = async () => {
     console.time("time")
     try {
@@ -97,7 +95,6 @@ const App = () => {
         mappingStr = await yarrrmlPlusToRml(mappingStr);
         console.log(mappingStr);
       }
-      downloadRmlStr = mappingStr;
       const result = await runRmlMapping(mappingStr,
         input,
         {
@@ -119,7 +116,8 @@ const App = () => {
 
   }
 
-  const saveRML = () => {
+  const saveRML = async () => {
+    const downloadRmlStr = await yarrrmlPlusToRml(mapping);
     downloadString(downloadRmlStr, 'ttl', 'mapping_rml.ttl');
   }
 
