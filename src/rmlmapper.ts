@@ -1,10 +1,11 @@
-import * as N3 from 'n3';
-import * as yarrrmlParser from '@rmlio/yarrrml-parser/lib/rml-generator';
+import { Writer as N3Writer } from 'n3';
+
+import * as YarrrmlParser from '@rmlio/yarrrml-parser/lib/rml-generator';
 import * as rmlMapperNode from 'rocketrml';
 
 export const yarrrmlParse = (yaml: string): Promise<string> =>
   new Promise((resolve) => {
-    const y2r = new yarrrmlParser();
+    const y2r = new YarrrmlParser();
     const yamlQuads = y2r.convert(yaml);
     let prefixes = {
       rr: 'http://www.w3.org/ns/r2rml#',
@@ -17,26 +18,14 @@ export const yarrrmlParse = (yaml: string): Promise<string> =>
       fno: 'http://w3id.org/function/ontology#',
       mex: 'http://mapping.example.com/',
     };
-    prefixes = Object.assign({}, prefixes, y2r.getPrefixes());
+    prefixes = { ...prefixes, ...y2r.getPrefixes() };
 
-    const writer = new N3.Writer({ prefixes });
+    const writer = new N3Writer({ prefixes });
     writer.addQuads(yamlQuads);
     writer.end((_: any, result: any) => {
       resolve(result);
     });
   });
-
-export const runRmlMapping = async (
-  mappingFile: string,
-  inputFile: string,
-  options: any,
-) => {
-  return rmlMapperNode.parseFileLive(
-    mappingFile,
-    { input: inputFile },
-    options,
-  );
-};
 
 //  - [ex:name, {mapping: thumbnail, join: [asd, asd]}]
 // -->
@@ -49,7 +38,7 @@ export const runRmlMapping = async (
 export const yarrrmlExtend = (yarrrml: string): string => {
   // replace function
   let str = yarrrml.replace(
-    /((?:parameters|pms): *\[)([\w@^./$()"' ,[\]|=:]+)(\])/g,
+    /((?:parameters|pms): *\[)([\w@^./$()*"' ,[\]|=]+)(\])/g,
     (...e) => {
       const [, cg1, cg2, cg3] = e as [string, string, string, string];
       const params = cg2
@@ -61,7 +50,7 @@ export const yarrrmlExtend = (yarrrml: string): string => {
   );
   // replace join
   str = str.replace(
-    /join: *\[ *"?([\w@^./$:\-*, ')()]+)"? *, *"?([\w@^./$:\-*, '()]+)"? *\]/g,
+    /join: *\[ *"?([\w@^./$:\-*, '()]+)"? *, *"?([\w@^./$:\-*, '()]+)"? *\]/g,
     'condition:{function:equal,parameters:[[str1,"$($1)"],[str2,"$($2)"]]}',
   );
   return str;
@@ -126,7 +115,7 @@ const yarrrmlEncodeBrackets = (str: string) => {
 
 // console.log(yarrrmlEncodeBrackets('asd$(fii) fds $(fs(name(), conc(foo, my, "fellow"))g) why'));
 
-export const decodeRMLReplacements = (rml: string) =>
+export const decodeRMLReplacements = (rml: string): string =>
   Object.entries(escapeTable).reduce(
     (str, [char, code]) => str.replace(new RegExp(code, 'g'), char),
     rml,
@@ -134,9 +123,20 @@ export const decodeRMLReplacements = (rml: string) =>
 
 export const yarrrmlPlusToRml = async (yarrrml: string): Promise<string> => {
   let mappingStr = yarrrmlExtend(yarrrml);
-  console.log(mappingStr);
   mappingStr = yarrrmlEncodeBrackets(mappingStr);
   mappingStr = await yarrrmlParse(mappingStr);
   mappingStr = decodeRMLReplacements(mappingStr);
   return mappingStr;
+};
+
+export const runRmlMapping = async (
+  mappingFile: string,
+  inputFile: string,
+  options: any,
+) => {
+  return rmlMapperNode.parseFileLive(
+    mappingFile,
+    { input: inputFile },
+    options,
+  );
 };

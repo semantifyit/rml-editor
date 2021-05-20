@@ -1,16 +1,14 @@
 import React, { useState } from 'react';
-import brace from 'brace';
 import AceEditor from 'react-ace';
 
-import 'brace/ext/searchbox';
-import 'brace/mode/yaml';
-import 'brace/mode/turtle';
-import 'brace/mode/xml';
-import 'brace/mode/json';
-import 'brace/mode/javascript';
-
-
-import 'brace/theme/dracula';
+import "ace-builds/webpack-resolver";
+import "ace-builds/src-noconflict/ext-searchbox"
+import "ace-builds/src-noconflict/mode-javascript"
+import "ace-builds/src-noconflict/mode-json"
+import "ace-builds/src-noconflict/mode-yaml"
+import "ace-builds/src-noconflict/mode-turtle"
+import "ace-builds/src-noconflict/mode-xml"
+import "ace-builds/src-noconflict/theme-dracula"
 
 import './App.css';
 
@@ -51,7 +49,7 @@ const initialInput = `{
       }
   ]
 }`;
-const initialFunctions = 
+const initialFunctions =
 `(() => {
   // define your function namespace here:
   const namespace = 'http://myfunc.com/';
@@ -93,20 +91,18 @@ const App = () => {
 
       if (rmlType === 'yaml') {
         mappingStr = await yarrrmlPlusToRml(mappingStr);
-        console.log(mappingStr);
       }
       const result = await runRmlMapping(mappingStr,
         input,
         {
           toRDF: (outputType==='turtle'),
-          removeNameSpace:{xmlns:"http://interface.deskline.net/DSI/XSD"},
           replace: true,
-          compress: { 
+          compress: {
            '@vocab':"http://schema.org/",
-           "booking": "http://booking-monitor.tirol.kg/vocab/"
           },
+          // eslint-disable-next-line no-eval
           functions: eval(functions),
-        });        
+        });
       setOutput(outputType==='turtle' ? result : JSON.stringify(result, null, 2));
     } catch (e) {
       console.log(e);
