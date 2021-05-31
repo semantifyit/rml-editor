@@ -50,7 +50,7 @@ export const yarrrmlExtend = (yarrrml: string): string => {
   );
   // replace join
   str = str.replace(
-    /join: *\[ *"?([\w@^./$:\-*, '()]+)"? *, *"?([\w@^./$:\-*, '()]+)"? *\]/g,
+    /join: *\[ *"?([\w@^./$:\-*, '()~]+)"? *, *"?([\w@^./$:\-*, '()~]+)"? *\]/g,
     'condition:{function:equal,parameters:[[str1,"$($1)"],[str2,"$($2)"]]}',
   );
   return str;
@@ -124,6 +124,8 @@ export const decodeRMLReplacements = (rml: string): string =>
 export const yarrrmlPlusToRml = async (yarrrml: string): Promise<string> => {
   let mappingStr = yarrrmlExtend(yarrrml);
   mappingStr = yarrrmlEncodeBrackets(mappingStr);
+  console.log(mappingStr)
+
   mappingStr = await yarrrmlParse(mappingStr);
   mappingStr = decodeRMLReplacements(mappingStr);
   return mappingStr;
